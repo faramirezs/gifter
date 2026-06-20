@@ -1,8 +1,15 @@
 # Giftr — An x402-Powered Local Gift Marketplace
 
+![alt text](<π gifter-hack 2026-06-20 at 3.47.16 PM.jpg>)
+
 No accounts. No credit cards. No payment forms. Just a wallet address and a payment that clears in under 500 milliseconds.
 
 Giftr is a local gift-experience marketplace where AI agents browse and buy handcrafted goods, restaurant vouchers, spa treatments, and creative workshops — all priced and settled in USDC via Circle's infrastructure. 18 gifts from 6 Berlin-based providers: a craftsman selling olive-wood kitchenware, a trattoria offering dinner vouchers, a specialty coffee roaster, a stationery studio, a plant shop, and a spa.
+
+![alt text](<π gifter-hack 2026-06-20 at 3.46.26 PM.jpg>)
+
+And he does it!
+![alt text](<π gifter-hack 2026-06-20 at 3.45.08 PM.jpg>)
 
 ---
 
@@ -31,6 +38,26 @@ The key unlock: **Circle's x402 protocol + Gateway batching means the marketplac
 
 Tokens: `dev-provider-token` / `dev-admin-token`.
 
+
+---
+
+## Walkthrough: Agent buys a gift for Mom
+
+Here's a real session where an AI agent buys an Olive-Wood Cutting Board for someone who loves cooking — fully autonomous, single prompt, USDC settlement in under 5 seconds.
+
+**1. The ask** — the user tells the agent: "Buy something for my mom she likes cooking not too expensive."
+
+![User asking agent to buy a gift for mom](https://p216.p3.n0.cdn.zight.com/items/wbulA9Qx/0a664cde-1678-4ea4-98d1-d4ab3df03974.jpg?v=2f0427d23af65b43617f102bb95f2493)
+
+**2. Discovery** — the agent calls `GET /api/catalog` to search the marketplace, cross-references prices and tags, and narrows to the best cooking-adjacent option: an olive-wood cutting board from Bottega del Legno at $45 USDC. The agent explains its reasoning — food-safe, handcrafted, useful for cooking, reasonably priced.
+
+![Agent browsing catalog and selecting the best gift](https://p216.p3.n0.cdn.zight.com/items/o0uw4EXX/384a2f77-5e15-49c1-9a23-ce1a519f9068.jpg?v=dd73b46ec187291b64746366ce23169c)
+
+**3. Purchase** — the agent hits `/api/orders/buy`, decodes the `402 PAYMENT-REQUIRED` header, and pays 45 USDC via Circle Gateway on ARC-TESTNET (`circle services pay --chain ARC-TESTNET`). Gateway settles in under 5 seconds. The server validates the payment, creates the order, and returns a redemption link. No accounts, no forms, no cards.
+
+![Order confirmed — Mom's gift purchased](https://p216.p3.n0.cdn.zight.com/items/RBuxN4Zy/b51c06d2-0cd5-4cdb-8601-5e488b5d9c3f.jpg?v=50a2768a7e5c002b75bd47579688daac)
+
+The entire interaction — from natural-language request to settled order — took one prompt and under 30 seconds.
 ---
 
 ## Quick Start
