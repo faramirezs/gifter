@@ -1,12 +1,9 @@
 # Giftr — An x402-Powered Local Gift Marketplace
 
-![alt text](<π gifter-hack 2026-06-20 at 3.47.16 PM.jpg>)
-
 No accounts. No credit cards. No payment forms. Just a wallet address and a payment that clears in under 500 milliseconds.
 
 Giftr is a local gift-experience marketplace where AI agents browse and buy handcrafted goods, restaurant vouchers, spa treatments, and creative workshops — all priced and settled in USDC via Circle's infrastructure. 18 gifts from 6 Berlin-based providers: a craftsman selling olive-wood kitchenware, a trattoria offering dinner vouchers, a specialty coffee roaster, a stationery studio, a plant shop, and a spa.
 
-![alt text](<π gifter-hack 2026-06-20 at 3.46.26 PM.jpg>)
 
 And he does it!
 ![alt text](<π gifter-hack 2026-06-20 at 3.45.08 PM.jpg>)
