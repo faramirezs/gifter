@@ -53,6 +53,7 @@ router.get("/orders/buy",
         network: order.network,
         created_at: order.created_at,
       },
+      _hint: "Order created! Share the url with recipient. Recipient opens url → taps 'Mark fulfilled'. On-site redemption, no email needed.",
     });
   }
 );
@@ -83,6 +84,7 @@ router.get("/orders/lookup", (req, res) => {
       amount_paid: order.amount_paid,
       network: order.network,
     },
+    _hint: "If status is 'open', POST /api/orders/fulfill with {token}. Tap 'Mark fulfilled' for on-site redemption. No auth needed — the token IS the capability.",
   });
 });
 
@@ -113,6 +115,7 @@ router.get("/orders/:id", (req, res) => {
       network: order.network,
       payment_tx: order.payment_tx,
     },
+    _hint: "Order settled on ARC-TESTNET. Share /o/<token> with recipient for redemption. Token URL is the delivery — no email needed.",
   });
 });
 
@@ -125,11 +128,11 @@ router.post("/orders/fulfill", (req, res) => {
   const order = getOrderByToken(db, token);
   if (!order) return res.status(404).json({ error: "order not found" });
   if (order.status === "fulfilled") {
-    return res.json({ ok: true, already: true, status: "fulfilled" });
+    return res.json({ ok: true, already: true, status: "fulfilled", _hint: "Order was already fulfilled. No action needed." });
   }
   const updated = setOrderStatusByToken(db, { token, status: "fulfilled" });
   if (!updated) return res.status(404).json({ error: "order not found" });
-  res.json({ ok: true, status: updated.status });
+  res.json({ ok: true, status: updated.status, _hint: "Order fulfilled! Recipient can now enjoy their gift. The order page will show 'Already redeemed' on refresh." });
 });
 
 export default router;

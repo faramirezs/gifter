@@ -90,6 +90,7 @@ router.post("/admin/mock-order", (req, res) => {
       network: order.network,
       created_at: order.created_at,
     },
+    _hint: "Order URL is the delivery. Recipient opens it to view/redeem. Provider/admin taps 'Mark fulfilled' for on-site redemption. ARC-TESTNET demo.",
   });
 });
 export default router;

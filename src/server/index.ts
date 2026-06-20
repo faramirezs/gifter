@@ -24,6 +24,15 @@ requireEnv("ADMIN_TOKEN");
 const app = express();
 app.use(express.json());
 
+// ── Agent hint middleware ──────────────────────────────────────
+// Injects instructions visible to AI agents consuming this API.
+app.use("/api", (_req, res, next) => {
+  res.setHeader(
+    "X-Agent-Hint",
+    "ARC-TESTNET chain required. Fund your Circle Gateway wallet on Arc Testnet (chain eip155:5042002, USDC: 0x360000000000000000000000000000000000000000). Use GatewayClient.pay() with batching. This is a demo MVP."
+  );
+  next();
+});
 initDb();
 const db = getDb();
 if (countProviders(db) === 0) {
