@@ -1,8 +1,8 @@
-# Giftr — An x402-Powered Local Gift Marketplace
+# Giftr: An x402-Powered Local Gift Marketplace
 
 No accounts. No credit cards. No payment forms. Just a wallet address and a payment that clears in under 500 milliseconds.
 
-Giftr is a local gift-experience marketplace where AI agents browse and buy handcrafted goods, restaurant vouchers, spa treatments, and creative workshops — all priced and settled in USDC via Circle's infrastructure. 18 gifts from 6 Berlin-based providers: a craftsman selling olive-wood kitchenware, a trattoria offering dinner vouchers, a specialty coffee roaster, a stationery studio, a plant shop, and a spa.
+Giftr is a local gift-experience marketplace where AI agents browse and buy handcrafted goods, restaurant vouchers, spa treatments, and creative workshops, all priced and settled in USDC via Circle's infrastructure. 18 gifts from 6 Berlin-based providers: a craftsman selling olive-wood kitchenware, a trattoria offering dinner vouchers, a specialty coffee roaster, a stationery studio, a plant shop, and a spa.
 
 
 And he does it!
@@ -14,11 +14,11 @@ And he does it!
 
 Three pieces of Circle infrastructure do the heavy lifting:
 
-**1. Circle Agent Wallet** — a programmatic, non-custodial USDC wallet purpose-built for AI agents. Authenticates, holds balances, and authorizes payments without API keys, browser sessions, or manual signing.
+**1. Circle Agent Wallet**: a programmatic, non-custodial USDC wallet purpose-built for AI agents. Authenticates, holds balances, and authorizes payments without API keys, browser sessions, or manual signing.
 
-**2. Circle Gateway (`GatewayWalletBatched`)** — the payment rail. When the buy endpoint is hit without payment, it returns `HTTP 402 Payment Required` with base64-encoded x402 payment details in the `PAYMENT-REQUIRED` header: seller address, exact amount in atomic USDC units, accepted chain (`eip155:5042002` = ARC-TESTNET), and the `GatewayWalletBatched` scheme. `@circle-fin/x402-batching` server middleware (`createGatewayMiddleware`) validates every incoming payment against the Gateway facilitator before the order is created.
+**2. Circle Gateway (`GatewayWalletBatched`)**: the payment rail. When the buy endpoint is hit without payment, it returns `HTTP 402 Payment Required` with base64-encoded x402 payment details in the `PAYMENT-REQUIRED` header: seller address, exact amount in atomic USDC units, accepted chain (`eip155:5042002` = ARC-TESTNET), and the `GatewayWalletBatched` scheme. `@circle-fin/x402-batching` server middleware (`createGatewayMiddleware`) validates every incoming payment against the Gateway facilitator before the order is created.
 
-**3. ARC-TESTNET** — USDC is the native gas token. No ETH, no MATIC, no separate gas token to pre-fund. One asset, zero friction.
+**3. ARC-TESTNET**: USDC is the native gas token. No ETH, no MATIC, no separate gas token to pre-fund. One asset, zero friction.
 
 The key unlock: **Circle's x402 protocol + Gateway batching means the marketplace never touches a private key, never manages user accounts, and never worries about chain-specific gas tokens. A GET request with a wallet address is the entire checkout flow.**
 
@@ -40,21 +40,21 @@ Tokens: `dev-provider-token` / `dev-admin-token`.
 
 ## Walkthrough: Agent buys a gift for Mom
 
-Here's a real session where an AI agent buys an Olive-Wood Cutting Board for someone who loves cooking — fully autonomous, single prompt, USDC settlement in under 5 seconds.
+Here's a real session where an AI agent buys an Olive-Wood Cutting Board for someone who loves cooking, fully autonomous, single prompt, USDC settlement in under 5 seconds.
 
-**1. The ask** — the user tells the agent: "Buy something for my mom she likes cooking not too expensive."
+**1. The ask**: the user tells the agent: "Buy something for my mom she likes cooking not too expensive."
 
 ![User asking agent to buy a gift for mom](https://p216.p3.n0.cdn.zight.com/items/wbulA9Qx/0a664cde-1678-4ea4-98d1-d4ab3df03974.jpg?v=2f0427d23af65b43617f102bb95f2493)
 
-**2. Discovery** — the agent calls `GET /api/catalog` to search the marketplace, cross-references prices and tags, and narrows to the best cooking-adjacent option: an olive-wood cutting board from Bottega del Legno at $45 USDC. The agent explains its reasoning — food-safe, handcrafted, useful for cooking, reasonably priced.
+**2. Discovery**: the agent calls `GET /api/catalog` to search the marketplace, cross-references prices and tags, and narrows to the best cooking-adjacent option: an olive-wood cutting board from Bottega del Legno at $45 USDC. The agent explains its reasoning: food-safe, handcrafted, useful for cooking, reasonably priced.
 
 ![Agent browsing catalog and selecting the best gift](https://p216.p3.n0.cdn.zight.com/items/o0uw4EXX/384a2f77-5e15-49c1-9a23-ce1a519f9068.jpg?v=dd73b46ec187291b64746366ce23169c)
 
-**3. Purchase** — the agent hits `/api/orders/buy`, decodes the `402 PAYMENT-REQUIRED` header, and pays 45 USDC via Circle Gateway on ARC-TESTNET (`circle services pay --chain ARC-TESTNET`). Gateway settles in under 5 seconds. The server validates the payment, creates the order, and returns a redemption link. No accounts, no forms, no cards.
+**3. Purchase**: the agent hits `/api/orders/buy`, decodes the `402 PAYMENT-REQUIRED` header, and pays 45 USDC via Circle Gateway on ARC-TESTNET (`circle services pay --chain ARC-TESTNET`). Gateway settles in under 5 seconds. The server validates the payment, creates the order, and returns a redemption link. No accounts, no forms, no cards.
 
-![Order confirmed — Mom's gift purchased](https://p216.p3.n0.cdn.zight.com/items/RBuxN4Zy/b51c06d2-0cd5-4cdb-8601-5e488b5d9c3f.jpg?v=50a2768a7e5c002b75bd47579688daac)
+![Order confirmed: Mom's gift purchased](https://p216.p3.n0.cdn.zight.com/items/RBuxN4Zy/b51c06d2-0cd5-4cdb-8601-5e488b5d9c3f.jpg?v=50a2768a7e5c002b75bd47579688daac)
 
-The entire interaction — from natural-language request to settled order — took one prompt and under 30 seconds.
+The entire interaction, from natural-language request to settled order, took one prompt and under 30 seconds.
 ---
 
 ## Quick Start
@@ -71,7 +71,7 @@ Open http://localhost:5173.
 
 ## API
 
-12 endpoints. Only `/api/orders/buy` touches money — `createGatewayMiddleware` validates the x402 payment against the Circle Gateway facilitator and only forwards the request once USDC has settled. Everything else is free metadata and lifecycle.
+12 endpoints. Only `/api/orders/buy` touches money; `createGatewayMiddleware` validates the x402 payment against the Circle Gateway facilitator and only forwards the request once USDC has settled. Everything else is free metadata and lifecycle.
 
 ### Public catalog
 
@@ -136,9 +136,9 @@ Agent flow: browse catalog, trigger 402, `GatewayClient.pay(url)` settles in und
 
 ## x402 Payment Gate
 
-1. **Pre-flight** — validates `productId` and `buyerAddress` (invalid returns 404/422 before any payment)
-2. **Gate** — `gateway.require(price)` returns 402 with `PAYMENT-REQUIRED` header containing x402 v2, resource URL, 12 supported chains including `eip155:5042002` (ARC-TESTNET), USDC amount in base units (6 decimals), seller address, and `GatewayWalletBatched` settlement contract
-3. **Settlement** — `GatewayClient.pay(url)` settles via Circle Gateway, `req.payment` is validated, order is created, URL is returned
+1. **Pre-flight**: validates `productId` and `buyerAddress` (invalid returns 404/422 before any payment)
+2. **Gate**: `gateway.require(price)` returns 402 with `PAYMENT-REQUIRED` header containing x402 v2, resource URL, 12 supported chains including `eip155:5042002` (ARC-TESTNET), USDC amount in base units (6 decimals), seller address, and `GatewayWalletBatched` settlement contract
+3. **Settlement**: `GatewayClient.pay(url)` settles via Circle Gateway, `req.payment` is validated, order is created, URL is returned
 
 ```bash
 curl -i 'http://localhost:3000/api/orders/buy?productId=gift_espresso_tonic&buyerAddress=0x...'
@@ -168,7 +168,7 @@ scripts/   buy.ts (GatewayClient driver) | unpaid-curl.sh
 
 ## Auth
 
-Provider and admin routes use `Bearer` token auth with `crypto.timingSafeEqual`. The order page (`/o/<token>`) is public — the 256-bit random token in the URL is the capability.
+Provider and admin routes use `Bearer` token auth with `crypto.timingSafeEqual`. The order page (`/o/<token>`) is public; the 256-bit random token in the URL is the capability.
 
 ---
 
